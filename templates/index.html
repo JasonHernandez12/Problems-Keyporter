@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <title>Key Institute - Reportes</title>
+    <title>Reportes Key Institute</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Bienvenido al Sistema de Reportes</h1>
-    <p>Este es el proyecto del grupo para Fundamentos de Programación.</p>
+    <h1>📋 Listado de Reportes - Key Institute</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reporte in reportes %}
+            <tr>
+                <td>{{ reporte.titulo }}</td>
+                <td><strong>{{ reporte.prioridad }}</strong></td>
+                <td>{{ reporte.estado }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
