@@ -9,7 +9,7 @@ def get_db_connection():
     # Usualmente es localhost\SQLEXPRESS o el nombre de tu PC
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=ELIEZERRDR\SQLEXPRESS;'
+        'SERVER=7GUERRERO\SQLEXPRESS;'
         'DATABASE=KeyInstituteDB;'
         'Trusted_Connection=yes;'
     )
