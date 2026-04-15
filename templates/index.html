@@ -14,7 +14,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="static/css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body id="page-top">
@@ -54,12 +54,17 @@
                 </div>
                 <div class="row text-center">
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3">E-Commerce</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalIncidentes" style="text-decoration: none; color: inherit;">
+                            
+                            <span class="fa-stack fa-4x">
+                                <i id="iconoIncidente" class="fas fa-circle fa-stack-2x text-primary"></i>
+                                <i class="fas fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+                            </span>
+
+                            <h4 class="my-3">Incidentes</h4>
+                            <p class="text-muted">Reporta un incidente aquí.</p>
+
+                        </a>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
@@ -607,5 +612,65 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <!-- Modal Incidentes -->
+<div class="modal fade" id="modalIncidentes" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Reportar Incidente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción del incidente</label>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Dirigido a</label>
+                        <div class="mb-3">
+                            <label class="form-label">Prioridad</label>
+                            <select class="form-select" id="prioridad">
+                                <option selected disabled>Selecciona prioridad</option>
+                                <option value="leve">Leve</option>
+                                <option value="grave">Grave</option>
+                            </select>
+                        </div>  
+                        <select class="form-select">
+                            <option selected disabled>Selecciona</option>
+                            <option value="director">Director</option>
+                            <option value="docentes">Docentes</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+
+                </form>
+            </div>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const prioridad = document.getElementById("prioridad");
+            const icono = document.getElementById("iconoIncidente");
+
+            prioridad.addEventListener("change", function() {
+
+                if (this.value === "grave") {
+                    icono.classList.remove("text-warning");
+                    icono.classList.add("text-danger");
+                } 
+                else if (this.value === "leve") {
+                    icono.classList.remove("text-danger");
+                    icono.classList.add("text-warning");
+                }
+
+            });
+
+        });
+        </script>
     </body>
 </html>
