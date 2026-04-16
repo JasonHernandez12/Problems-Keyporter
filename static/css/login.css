@@ -1,0 +1,49 @@
+body {
+    background: radial-gradient(circle at top right, #1a2a40, #0a0e14);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card {
+    background: #1e252f;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid #2d3748;
+}
+
+.logo-box {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-control:focus {
+    background-color: #1a202c;
+    border-color: #3b82f6;
+    color: white;
+    box-shadow: none;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #1d4ed8, #6d28d9);
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.2);
+}
+
+.input-group-text {
+    border-radius: 10px 0 0 10px;
+}
+
+input.form-control {
+    border-radius: 0 10px 10px 0;
+}

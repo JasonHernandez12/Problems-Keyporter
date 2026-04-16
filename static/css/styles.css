@@ -104,6 +104,18 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.nav-link.btn-danger {
+    border-radius: 8px;
+    padding: 8px 15px !important;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.nav-link.btn-danger:hover {
+    background-color: #bd2130 !important;
+    transform: scale(1.05);
+}
+
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -2846,10 +2858,10 @@ textarea.form-control-lg {
 
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #ffc800;
-  --bs-btn-border-color: #ffc800;
+  --bs-btn-bg: #8c00ff;
+  --bs-btn-border-color: #8400ff;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #d9aa00;
+  --bs-btn-hover-bg: #6500d9;
   --bs-btn-hover-border-color: #cca000;
   --bs-btn-focus-shadow-rgb: 255, 208, 38;
   --bs-btn-active-color: #fff;
@@ -10947,12 +10959,21 @@ header.masthead {
   padding-bottom: 6rem;
   text-align: center;
   color: #fff;
-  background-image: url("../assets/img/header-bg.jpg");
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center center;
-  background-size: cover;
+  background-image: linear-gradient(
+        rgba(0, 0, 0, 0.6), 
+        rgba(0, 0, 0, 0.6)
+      ), 
+      url('../img/fondokey.jpeg');
+    
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center center;
+    background-size: cover;
+    padding-top: 10.5rem;
+    padding-bottom: 6rem;
 }
+
+
 header.masthead .masthead-subheading {
   font-size: 1.5rem;
   font-style: italic;

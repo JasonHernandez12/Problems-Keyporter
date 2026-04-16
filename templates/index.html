@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Agency - Start Bootstrap Theme</title>
+    <title>Sistema de Reportes - Key Institute</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../static/img/otrologo.png" />
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
@@ -23,7 +23,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
+            <a class="navbar-brand" href="#page-top"><img src="../static/img/logoback.png" alt="..." /></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
@@ -31,20 +31,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
+    <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
+    <li class="nav-item"><a class="nav-link" href="#portfolio">Portafolio</a></li>
+    <li class="nav-item"><a class="nav-link" href="#about">Acerca de</a></li>
+    <li class="nav-item">
+        <a class="nav-link btn btn-danger text-white px-3 ms-lg-3" href="{{ url_for('logout') }}">
+            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </a>
+    </li>
+</ul>
             </div>
         </div>
     </nav>
     <!-- Masthead-->
     <header class="masthead">
         <div class="container">
-            <div class="masthead-subheading">Welcome To Our Studio!</div>
-            <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
+            <div class="masthead-subheading">
+            Welcome to our reporting system: <strong>{{ nombre_usuario }}</strong>. 
+            
+        </div>
+            <div class="masthead-heading text-uppercase">Cuéntanos qué sucedió</div>
             <a class="btn btn-primary btn-xl text-uppercase" href="#services">Tell Me More</a>
         </div>
     </header>
@@ -52,8 +58,8 @@
     <section class="page-section" id="services">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Services</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                <h2 class="section-heading text-uppercase">Reportes</h2>
+                <h3 class="section-subheading text-muted">Selecciona el tipo de reporte que quieres realizar</h3>
             </div>
             <div class="row text-center">
                 <div class="col-md-4">
