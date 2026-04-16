@@ -7,7 +7,7 @@ app.secret_key = 'KeyInstitute_Security_2026'
 def get_db_connection():
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=ELIEZERRDR\SQLEXPRESS;'
+        'SERVER=GOGUILPTP\\SQLEXPRESS;'
         'DATABASE=KeyInstituteDB;'
         'Trusted_Connection=yes;'
     )
