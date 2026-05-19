@@ -1,0 +1,134 @@
+:root {
+    --primary-blue: #3b82f6;
+    --dark-bg: #0a0f1d;
+    --glass: rgba(255, 255, 255, 0.05);
+    --gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+}
+
+body {
+    background-color: var(--dark-bg);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.4) 0, transparent 40%), 
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.2) 0, transparent 40%);
+    background-attachment: fixed;
+    color: white;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+}
+
+/* Contenedor Principal Centrado */
+.main-content {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Tarjeta tipo Glassmorphism */
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Tabla Estilizada */
+.table-container {
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.table {
+    color: white !important;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: var(--gradient) !important;
+    color: white !important;
+    border: none;
+    padding: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+}
+
+.table tbody tr {
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: scale(1.005);
+}
+
+.table td {
+    padding: 18px;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Badges de Estado */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.7rem;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.bg-incidente { background-color: #ef4444; color: white; }
+.bg-soporte { background-color: #3b82f6; color: white; }
+.bg-sugerencia { background-color: #f59e0b; color: black; }
+
+/* Botón de Logout */
+.btn-logout {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.3s;
+}
+
+.btn-logout:hover {
+    background: #ef4444;
+    color: white;
+}
+
+/* Colores de prioridad */
+.prioridad-grave {
+    color: #f87171 !important;
+}
+
+.prioridad-normal {
+    color: #60a5fa !important;
+}
+/* Esto fuerza a que el fondo oscuro no se robe el foco */
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+.modal {
+    z-index: 1050 !important;
+}
+
+/* Si el desenfoque (blur) del dashboard causa el problema en image_9b2880.png */
+body.modal-open .main-content {
+    filter: none !important; /* Quitamos el filtro mientras el modal esté abierto */
+}

@@ -22,27 +22,38 @@
 <body id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#page-top"><img src="../static/img/logoback.png" alt="..." /></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
-                <i class="fas fa-bars ms-1"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-    <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-    <li class="nav-item"><a class="nav-link" href="#portfolio">Portafolio</a></li>
-    <li class="nav-item"><a class="nav-link" href="#about">Acerca de</a></li>
-    <li class="nav-item">
-        <a class="nav-link btn btn-danger text-white px-3 ms-lg-3" href="{{ url_for('logout') }}">
-            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-        </a>
-    </li>
-</ul>
-            </div>
+    <div class="container">
+        <a class="navbar-brand" href="#page-top"><img src="../static/img/logoback.png" alt="..." /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ms-1"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0 align-items-center">
+                <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#portfolio">Portafolio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">Acerca de</a></li>
+                
+                <!-- BOTÓN DE BANDEJA DE ENTRADA -->
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-primary position-relative px-3 ms-lg-3 mb-2 mb-lg-0" href="{{ url_for('bandeja_estudiante') }}" style="border-radius: 8px; text-transform: none;">
+                        <i class="bi bi-bell-fill"></i> Bandeja
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                            1
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white px-3 ms-lg-2" href="{{ url_for('logout') }}" style="border-radius: 8px;">
+                        <i class="bi bi-box-arrow-right"></i> Salir
+                    </a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     <!-- Masthead-->
     <header class="masthead">
         <div class="container">
@@ -203,88 +214,7 @@
         </div>
         </div>
     </section>
-    <!-- About-->
-    <section class="page-section" id="about">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">About</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-            </div>
-            <ul class="timeline">
-                <li>
-                    <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/1.jpg"
-                            alt="..." /></div>
-                    <div class="timeline-panel">
-                        <div class="timeline-heading">
-                            <h4>2009-2011</h4>
-                            <h4 class="subheading">Our Humble Beginnings</h4>
-                        </div>
-                        <div class="timeline-body">
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut
-                                voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero
-                                unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="timeline-inverted">
-                    <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/2.jpg"
-                            alt="..." /></div>
-                    <div class="timeline-panel">
-                        <div class="timeline-heading">
-                            <h4>March 2011</h4>
-                            <h4 class="subheading">An Agency is Born</h4>
-                        </div>
-                        <div class="timeline-body">
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut
-                                voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero
-                                unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/3.jpg"
-                            alt="..." /></div>
-                    <div class="timeline-panel">
-                        <div class="timeline-heading">
-                            <h4>December 2015</h4>
-                            <h4 class="subheading">Transition to Full Service</h4>
-                        </div>
-                        <div class="timeline-body">
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut
-                                voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero
-                                unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="timeline-inverted">
-                    <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/4.jpg"
-                            alt="..." /></div>
-                    <div class="timeline-panel">
-                        <div class="timeline-heading">
-                            <h4>July 2020</h4>
-                            <h4 class="subheading">Phase Two Expansion</h4>
-                        </div>
-                        <div class="timeline-body">
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut
-                                voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero
-                                unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="timeline-inverted">
-                    <div class="timeline-image">
-                        <h4>
-                            Be Part
-                            <br />
-                            Of Our
-                            <br />
-                            Story!
-                        </h4>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
+    
     <!-- Team-->
     <section class="page-section bg-light" id="team">
         <div class="container">
@@ -709,125 +639,134 @@
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
-    <!-- ============================================================ -->
-    <!-- MODAL INCIDENTES — hijo directo del body                     -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalIncidentes" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Reportar Incidente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Descripción del incidente</label>
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Prioridad</label>
-                            <select class="form-select" id="prioridad">
-                                <option selected disabled>Selecciona prioridad</option>
-                                <option value="leve">Leve</option>
-                                <option value="grave">Grave</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Dirigido a</label>
-                            <select class="form-select">
-                                <option selected disabled>Selecciona</option>
-                                <option value="director">Director</option>
-                                <option value="docentes">Docentes</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </form>
-                </div>
+   <!-- ============================================================ -->
+<!-- MODAL INCIDENTES                                             -->
+<!-- ============================================================ -->
+<div class="modal fade" id="modalIncidentes" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reportar Incidente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- MODAL SOPORTE — hijo directo del body                        -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalSoporte" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-headset me-2 text-warning"></i>Centro de Soporte
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="cuerpoModalSoporte">
-                    <form id="formSoporte">
-                        <div class="mb-3">
-                            <label class="form-label text-dark fw-bold">Tipo de problema</label>
-                            <select class="form-select" required>
-                                <option value="" selected disabled>Selecciona una categoría</option>
-                                <option value="academico">Académico</option>
-                                <option value="administrativo">Administrativo</option>
-                                <option value="wellness">Wellness</option>
-                                <option value="horas_key">Horas Key</option>
-                                <option value="justificacion">Justificación de faltas</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-dark fw-bold">¿Cuál fue el problema?</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-dark fw-bold">Especifica los detalles</label>
-                            <textarea class="form-control" rows="3" required></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer" id="pieModalSoporte">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="formSoporte" class="btn btn-primary">Enviar Reporte</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- MODAL SUGERENCIAS — hijo directo del body                    -->
-    <!-- ============================================================ -->
-    <div class="modal fade" id="modalSugerencias" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title">
-                        <i class="fas fa-lightbulb me-2"></i>Sugerencias
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body" id="cuerpoModalSugerencias">
-                    <form id="formSugerencias">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Título de la sugerencia</label>
-                            <input type="text" class="form-control" id="tituloSugerencia"
-                                placeholder="Escribe el título de tu sugerencia" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Descripción de la sugerencia</label>
-                            <textarea class="form-control" id="descripcionSugerencia" rows="4"
-                                placeholder="Describe tu sugerencia" required></textarea>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="modal-footer" id="pieModalSugerencias">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="formSugerencias" class="btn btn-warning">Enviar Sugerencia</button>
+            <div class="modal-body">
+                <form action="/crear_reporte" method="POST">
+                    <!-- Identificador del tipo -->
+                    <input type="hidden" name="tipo" value="Incidente">
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold">Descripción del incidente</label>
+                        <textarea name="descripcion" class="form-control" rows="3" required placeholder="Describe lo ocurrido..."></textarea>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold">Prioridad</label>
+                        <select name="prioridad" class="form-select" id="prioridad" required>
+                            <option value="leve" selected>Leve</option>
+                            <option value="grave">Grave</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold">Dirigido a</label>
+                        <select name="categoria" class="form-select" required>
+                            <option value="docentes" selected>Docentes</option>
+                            <option value="director">Director</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer px-0 pb-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL SOPORTE                                                -->
+<!-- ============================================================ -->
+<div class="modal fade" id="modalSoporte" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-headset me-2 text-warning"></i>Centro de Soporte
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/crear_reporte" method="POST">
+                    <input type="hidden" name="tipo" value="Soporte">
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold">Tipo de problema</label>
+                        <select name="categoria" class="form-select" required>
+                            <option value="" selected disabled>Selecciona una categoría</option>
+                            <option value="academico">Académico</option>
+                            <option value="administrativo">Administrativo</option>
+                            <option value="wellness">Wellness</option>
+                            <option value="horas_key">Horas Key</option>
+                            <option value="justificacion">Justificación de faltas</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold">¿Cuál fue el problema?</label>
+                        <input type="text" name="titulo" class="form-control" placeholder="Ej: Error en plataforma" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold">Especifica los detalles</label>
+                        <textarea name="descripcion" class="form-control" rows="3" placeholder="Brinda más detalles..." required></textarea>
+                    </div>
+                    <!-- Prioridad por defecto para soporte -->
+                    <input type="hidden" name="prioridad" value="Media">
+                    
+                    <div class="modal-footer px-0 pb-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar a Soporte</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL SUGERENCIAS                                            -->
+<!-- ============================================================ -->
+<div class="modal fade" id="modalSugerencias" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">
+                    <i class="fas fa-lightbulb me-2"></i>Sugerencias
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/crear_reporte" method="POST">
+                    <input type="hidden" name="tipo" value="Sugerencia">
+                    <input type="hidden" name="prioridad" value="Baja">
+                    <input type="hidden" name="categoria" value="General">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Título de la sugerencia</label>
+                        <input type="text" name="titulo" class="form-control" placeholder="Escribe el título..." required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Descripción de la sugerencia</label>
+                        <textarea name="descripcion" class="form-control" rows="4" placeholder="Describe tu idea..." required></textarea>
+                    </div>
+                    
+                    <div class="modal-footer px-0 pb-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-warning">Enviar Sugerencia</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- ============================================================ -->
     <!-- Bootstrap JS                                                 -->
@@ -856,44 +795,6 @@
         });
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const formSoporte = document.getElementById('formSoporte');
-            if (formSoporte) {
-                formSoporte.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    document.getElementById('cuerpoModalSoporte').innerHTML = `
-                        <div class="text-center py-4">
-                            <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
-                            <h4 class="mt-3 text-dark">¡Reporte enviado exitosamente!</h4>
-                            <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="modal">Cerrar</button>
-                        </div>`;
-                    document.getElementById('pieModalSoporte').style.display = 'none';
-                });
-            }
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const formSugerencias = document.getElementById('formSugerencias');
-            if (formSugerencias) {
-                formSugerencias.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    document.getElementById('cuerpoModalSugerencias').innerHTML = `
-                        <div class="text-center py-4">
-                            <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
-                            <h4 class="mt-3 text-dark">¡Sugerencia enviada exitosamente!</h4>
-                            <p class="text-muted">Gracias por compartir tu idea con nosotros.</p>
-                            <button type="button" class="btn btn-warning mt-3" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    `;
-
-                    document.getElementById('pieModalSugerencias').style.display = 'none';
-                });
-            }
-        });
-    </script>
 
 </body>
 
