@@ -60,3 +60,19 @@ VALUES ('David Munguía', 'david.munguia@keyinstitute.edu.sv', '12345', 'Alumno'
 ('Diego de León', 'diego.deleon@keyinstitute.edu.sv', '12345', 'Alumno'),
 ('Jason Hernández', 'jason.hernandez@keyinstitute.edu.sv', '12345', 'Alumno');
 GO
+
+--Nuevo código sql a copiar
+-- Script para configurar el usuario Administrador del sistema Key Institute
+IF EXISTS (SELECT 1 FROM Usuarios WHERE email = 'erick.varela@keyinstitute.edu.sv')
+BEGIN
+    -- Si el usuario ya existe, elevamos sus privilegios a Admin
+    UPDATE Usuarios 
+    SET rol = 'Admin' 
+    WHERE email = 'erick.varela@keyinstitute.edu.sv';
+END
+ELSE
+BEGIN
+    -- Si el usuario no existe, lo creamos con las credenciales por defecto
+    INSERT INTO Usuarios (nombre, email, password, rol) 
+    VALUES ('Erick Varela', 'erick.varela@keyinstitute.edu.sv', 'admin123', 'Admin');
+END
