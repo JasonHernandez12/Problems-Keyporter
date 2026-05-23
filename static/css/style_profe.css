@@ -132,3 +132,10 @@ body {
 body.modal-open .main-content {
     filter: none !important; /* Quitamos el filtro mientras el modal esté abierto */
 }
+
+.modal-backdrop.show {
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}

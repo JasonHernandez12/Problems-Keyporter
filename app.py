@@ -1,4 +1,5 @@
 import pyodbc
+from werkzeug.security import generate_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 app = Flask(__name__)
@@ -8,7 +9,7 @@ app.secret_key = 'KeyInstitute_Security_2026'
 def get_db_connection():
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=ELIEZERRDR\\SQLEXPRESS;'
+        'SERVER=GOGUILPTP\\SQLEXPRESS;'
         'DATABASE=KeyInstituteDB;'
         'Trusted_Connection=yes;'
     )
@@ -199,11 +200,76 @@ def cambiar_rol(id_usuario):
     flash('Rol actualizado correctamente', 'success')
     return redirect(url_for('panel_admin'))
 
+@app.route('/agregar_usuario', methods=['POST'])
+def agregar_usuario():
+    if 'user_id' not in session or session.get('rol') != 'Admin':
+        return redirect(url_for('login'))
+
+    correo = request.form['correo'].strip().lower()
+    password = request.form['password']
+
+    nombre = correo.split('@')[0]
+    nombre = nombre.replace('.', ' ').replace('_', ' ').replace('-', ' ')
+    nombre = nombre.title()
+    nombre = nombre.replace('Deleon', 'de León')
+
+    rol = 'Alumno'
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO Usuarios (nombre, email, [password], rol)
+            VALUES (?, ?, ?, ?)
+        """, (nombre, correo, password, rol))
+
+        conn.commit()
+        conn.close()
+
+        flash('Usuario agregado correctamente.', 'success')
+
+    except Exception as e:
+        flash(f'Error al agregar usuario: {str(e)}', 'danger')
+
+    return redirect(url_for('panel_admin'))
+
+
 # --- CERRAR SESIÓN ---
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.route('/eliminar_usuario', methods=['POST'])
+def eliminar_usuario():
+    if 'user_id' not in session or session.get('rol') != 'Admin':
+        return redirect(url_for('login'))
+
+    id_usuario = request.form.get('id_usuario')
+
+    if not id_usuario:
+        return redirect(url_for('panel_admin'))
+
+    id_usuario = int(id_usuario)
+
+    # Evita que el admin se borre a sí mismo
+    if id_usuario == session.get('user_id'):
+        return redirect(url_for('panel_admin'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE FROM Usuarios
+        WHERE id_usuario = ? AND rol != 'Admin'
+    """, (id_usuario,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('panel_admin'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
