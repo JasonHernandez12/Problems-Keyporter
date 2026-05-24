@@ -66,52 +66,275 @@
         </div>
     </header>
     <!-- Services-->
-    <section class="page-section" id="services">
+    <section class="page-section bg-light" id="services">
         <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">Reportes</h2>
-                <h3 class="section-subheading text-muted">Selecciona el tipo de reporte que quieres realizar</h3>
+            <div class="text-center mb-5">
+                <h2 class="section-heading text-uppercase" style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #212529; letter-spacing: 1px;">Reportes</h2>
+                <h3 class="section-subheading text-muted" style="font-style: italic; font-size: 1.1rem;">Selecciona el tipo de reporte que quieres realizar</h3>
             </div>
-            <div class="row text-center">
+            
+            <div class="row g-4 justify-content-center">
                 <div class="col-md-4">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalIncidentes"
-                        style="text-decoration: none; color: inherit;">
-
-                        <span class="fa-stack fa-4x">
-                            <i id="iconoIncidente" class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
-                        </span>
-
-                        <h4 class="my-3">Incidentes</h4>
-                        <p class="text-muted">Reporta un incidente aquí.</p>
-
-                    </a>
+                    <button data-bs-toggle="modal" data-bs-target="#modalIncidentes" class="w-100 btn-tarjeta-reporte" style="background: none; border: none; padding: 0; text-align: inherit;">
+                        <div class="card h-100 text-center p-4 card-incidente">
+                            <div class="my-4 posicion-icono">
+                                <div class="wrapper-icono icono-rojo">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold my-2 titulo-tarjeta">Incidentes</h4>
+                            <p class="text-muted small px-3 mb-3">Informa sobre situaciones delicadas, daños a la infraestructura o incidentes dentro de la comunidad académica.</p>
+                            <div class="btn-accion-simulado btn-rojo-accion">Iniciar Reporte</div>
+                        </div>
+                    </button>
                 </div>
+
                 <div class="col-md-4">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalSoporte"
-                        style="text-decoration: none; color: inherit;">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-headset fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3">Centro de Soporte</h4>
-                        <p class="text-muted">Reporta tu problema aquí.</p>
-                    </a>
+                    <button data-bs-toggle="modal" data-bs-target="#modalSoporte" class="w-100 btn-tarjeta-reporte" style="background: none; border: none; padding: 0; text-align: inherit;">
+                        <div class="card h-100 text-center p-4 card-soporte">
+                            <div class="my-4 posicion-icono">
+                                <div class="wrapper-icono icono-celeste">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold my-2 titulo-tarjeta">Centro de Soporte</h4>
+                            <p class="text-muted small px-3 mb-3">¿Necesitas ayuda? Reporta aquí los inconvenientes que afectan tu vida diaria en la institución.</p>
+                            <div class="btn-accion-simulado btn-celeste-accion">Solicitar Soporte </div>
+                        </div>
+                    </button>
                 </div>
+
                 <div class="col-md-4">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalSugerencias"
-                        style="text-decoration: none; color: inherit;">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-lightbulb fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3">Sugerencias</h4>
-                        <p class="text-muted">Compártenos tus ideas y mejoras aquí.</p>
-                    </a>
+                    <button data-bs-toggle="modal" data-bs-target="#modalSugerencias" class="w-100 btn-tarjeta-reporte" style="background: none; border: none; padding: 0; text-align: inherit;">
+                        <div class="card h-100 text-center p-4 card-sugerencia">
+                            <div class="my-4 posicion-icono">
+                                <div class="wrapper-icono icono-amarillo">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold my-2 titulo-tarjeta">Sugerencias</h4>
+                            <p class="text-muted small px-3 mb-3">Compártenos tus ideas de mejora, nuevos espacios o cambios que te gustaría ver implementados.</p>
+                            <div class="btn-accion-simulado btn-amarillo-accion">Enviar Idea</div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="modalIncidentes" tabindex="-1" aria-labelledby="modalIncidentesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-white" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.25);">
+                <div class="modal-header text-white border-0 py-4 px-4" style="background: linear-gradient(135deg, #ff6b6b, #dc3545);">
+                    <h5 class="modal-title" id="modalIncidentesLabel" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.5px;">
+                        <i class="fas fa-exclamation-triangle me-2 animate-bounce"></i>Reportar Incidente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                    <div class="modal-body p-4 text-start bg-white">
+                        <div class="mb-3">
+                            <label for="tituloIncidente" class="form-label fw-bold small mb-1 label-modal-custom">TÍTULO DEL INCIDENTE</label>
+                            <input type="text" class="form-control input-modal-custom" id="tituloIncidente" name="tituloIncidente" placeholder="Ej. Daño a equipo de laboratorio por parte de estudiantes" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoIncidente" class="form-label fw-bold small mb-1 label-modal-custom">CLASIFICACIÓN</label>
+                            <select class="form-select input-modal-custom" id="tipoIncidente" name="tipoIncidente" required>
+                                <option value="" selected disabled>Selecciona una opción...</option>
+                                <option value="seguridad">Seguridad Física y Emocional (Acoso, altercados,etc.)</option>
+                                <option value="infraestructura">Infraestructura o Servicios</option>
+                                <option value="convivencia">Convivencia y Asuntos Disciplinarios </option>
+                                <option value="otro">Otro caso</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dirigidoA" class="form-label fw-bold small mb-1 label-modal-custom">DIRIGIDO A</label>
+                            <select class="form-select input-modal-custom" id="dirigidoA" name="dirigidoA" required>
+                                <option value="" selected disabled>Selecciona el destinatario...</option>
+                                <option value="docentes">Docentes</option>
+                                <option value="director">Director</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>                        
+                        <div class="mb-4">
+                            <label for="descripcionIncidente" class="form-label fw-bold small mb-1 label-modal-custom">DESCRIPCIÓN DETALLADA</label>
+                            <textarea class="form-control input-modal-custom" id="descripcionIncidente" name="descripcionIncidente" rows="4" placeholder="Indica detalladamente el incidente que se ha dado y sus repercusiones..." required></textarea>
+                        </div>  
+                    </div>
+                    <div class="modal-footer border-0 px-4 py-3 bg-light">
+                        <button type="button" class="btn text-uppercase py-2 px-4 btn-sm fw-bold btn-cancelar-modal" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn text-uppercase py-2 px-4 btn-sm fw-bold text-white btn-enviar-rojo">Enviar Reporte</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSoporte" tabindex="-1" aria-labelledby="modalSoporteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-white" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.25);">
+                <div class="modal-header text-white border-0 py-4 px-4" style="background: linear-gradient(135deg, #0fe3ff, #0dcaf0);">
+                    <h5 class="modal-title" id="modalSoporteLabel" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.5px; color: #ffffff !important;">
+                        <i class="fas fa-headset me-2"></i>Centro de Soporte
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                    <div class="modal-body p-4 text-start bg-white">
+                        <div class="mb-3">
+                            <label for="tipoProblema" class="form-label fw-bold small mb-0 label-modal-custom">TIPO DE PROBLEMA</label>
+                            <div class="form-text text-muted small mb-2" style="font-size: 0.8rem;">Escribe en que aspecto de tu vida académica está afectando</div>
+                            <input type="text" class="form-control input-modal-custom" id="tipoProblema" name="tipoProblema" placeholder="Ej. Problemas con la plataforma, materias, etc." required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prioridadSoporte" class="form-label fw-bold small mb-1 label-modal-custom">PRIORIDAD</label>
+                            <select class="form-select input-modal-custom" id="prioridadSoporte" name="prioridadSoporte" required>
+                                <option value="baja" selected>Baja - No afecta prácticamente en mi día a día</option>
+                                <option value="media">Media - Tiene un impacto moderado en mis actividades diarias</option>
+                                <option value="alta">Alta - Afecta grandemente en mi vida académica</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="descripcionSoporte" class="form-label fw-bold small mb-1 label-modal-custom">¿CÓMO PODEMOS AYUDARTE?</label>
+                            <textarea class="form-control input-modal-custom" id="descripcionSoporte" name="descripcionSoporte" rows="4" placeholder="Explícanos tu caso o duda..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 px-4 py-3 bg-light">
+                        <button type="button" class="btn text-uppercase py-2 px-4 btn-sm fw-bold btn-cancelar-modal" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn text-uppercase py-2 px-4 btn-sm fw-bold text-white btn-enviar-celeste">Solicitar Ayuda</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSugerencias" tabindex="-1" aria-labelledby="modalSugerenciasLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 bg-white" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.25);">
+                <div class="modal-header text-dark border-0 py-4 px-4" style="background: linear-gradient(135deg, #ffe066, #ffc800);">
+                    <h5 class="modal-title" id="modalSugerenciasLabel" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.5px; color: #212529 !important;">
+                        <i class="fas fa-lightbulb me-2"></i>Enviar Sugerencia
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                    <div class="modal-body p-4 text-start bg-white">
+                        <div class="mb-3">
+                            <label for="areaSugerencia" class="form-label fw-bold small mb-1 label-modal-custom">ÁREA DE MEJORA</label>
+                            <select class="form-select input-modal-custom" id="areaSugerencia" name="areaSugerencia" required>
+                                <option value="" selected disabled>Selecciona una opción...</option>
+                                <option value="interfaz">Vida estudiantil</option>
+                                <option value="funciones">Campus</option>
+                                <option value="rendimiento">Proyectos académicos</option>
+                                <option value="otro">Otras ideas</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="ideaSugerencia" class="form-label fw-bold small mb-1 label-modal-custom">TU PROPUESTA</label>
+                            <textarea class="form-control input-modal-custom" id="ideaSugerencia" name="ideaSugerencia" rows="4" placeholder="Cuéntanos con detalle tu idea para seguir mejorando..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 px-4 py-3 bg-light">
+                        <button type="button" class="btn text-uppercase py-2 px-4 btn-sm fw-bold btn-cancelar-modal" data-bs-dismiss="modal">Descartar</button>
+                        <button type="submit" class="btn text-uppercase py-2 px-4 btn-sm fw-bold text-dark btn-enviar-amarillo">Enviar Idea</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Base de los Botones de Tarjeta */
+        .btn-tarjeta-reporte { display: block; cursor: pointer; }
+        .btn-tarjeta-reporte .card {
+            background: #ffffff !important;
+            border: 1px solid #eaeaea !important;
+            border-radius: 16px !important;
+            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        .titulo-tarjeta { color: #212529 !important; font-family: 'Montserrat', sans-serif; }
+
+        /* Contenedores de iconos creativos */
+        .posicion-icono { display: flex; justify-content: center; align-items: center; }
+        .wrapper-icono {
+            width: 80px; height: 80px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; transition: all 0.35s ease;
+        }
+        .icono-rojo { background: linear-gradient(135deg, #ff6b6b, #dc3545); color: #ffffff; box-shadow: 0 8px 20px rgba(220, 53, 69, 0.25); }
+        .icono-celeste { background: linear-gradient(135deg, #0fe3ff, #0dcaf0); color: #ffffff; box-shadow: 0 8px 20px rgba(13, 202, 240, 0.25); }
+        .icono-amarillo { background: linear-gradient(135deg, #ffe066, #ffc800); color: #212529; box-shadow: 0 8px 20px rgba(255, 200, 0, 0.25); }
+
+        /* Botones Simulados en Tarjetas */
+        .btn-accion-simulado {
+            margin-top: auto; padding: 10px 20px; border-radius: 30px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;
+        }
+        .btn-rojo-accion { background-color: #fdeaea !important; color: #dc3545 !important; }
+        .btn-celeste-accion { background-color: #e6fafd !important; color: #0dcaf0 !important; }
+        .btn-amarillo-accion { background-color: #fff9e6 !important; color: #ffc800 !important; }
+
+        /* Efectos Hover de las Tarjetas */
+        .btn-tarjeta-reporte:hover .card { transform: translateY(-8px); }
+        .btn-tarjeta-reporte:hover .card-incidente { border-color: #dc3545 !important; box-shadow: 0 15px 30px rgba(220, 53, 69, 0.15) !important; }
+        .btn-tarjeta-reporte:hover .card-incidente .wrapper-icono { transform: scale(1.1) rotate(-10deg); }
+        .btn-tarjeta-reporte:hover .card-incidente .btn-rojo-accion { background-color: #dc3545 !important; color: #ffffff !important; }
+        
+        .btn-tarjeta-reporte:hover .card-soporte { border-color: #0dcaf0 !important; box-shadow: 0 15px 30px rgba(13, 202, 240, 0.15) !important; }
+        .btn-tarjeta-reporte:hover .card-soporte .wrapper-icono { transform: scale(1.1) rotate(10deg); }
+        .btn-tarjeta-reporte:hover .card-soporte .btn-celeste-accion { background-color: #0dcaf0 !important; color: #ffffff !important; }
+
+        .btn-tarjeta-reporte:hover .card-sugerencia { border-color: #ffc800 !important; box-shadow: 0 15px 30px rgba(255, 200, 0, 0.2) !important; }
+        .btn-tarjeta-reporte:hover .card-sugerencia .wrapper-icono { transform: scale(1.1) translateY(-2px); }
+        .btn-tarjeta-reporte:hover .card-sugerencia .btn-amarillo-accion { background-color: #ffc800 !important; color: #212529 !important; }
+
+        /* ========================================== */
+        /* AISLAMIENTO DE ESTILOS PARA LOS MODALES    */
+        /* ========================================== */
+        .label-modal-custom {
+            color: #495057 !important;
+            letter-spacing: 0.8px;
+            font-size: 0.8rem !important;
+        }
+        .input-modal-custom {
+            color: #212529 !important;
+            background-color: #ffffff !important;
+            border: 1px solid #ced4da !important;
+            font-size: 0.95rem !important;
+            border-radius: 10px !important;
+            padding: 10px 15px !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        .input-modal-custom:focus {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            border-color: #86b7fe !important;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
+            outline: 0 !important;
+        }
+        .btn-cancelar-modal {
+            background-color: #e9ecef !important;
+            color: #495057 !important;
+            border: none !important;
+            border-radius: 8px !important;
+            transition: background 0.2s;
+        }
+        .btn-cancelar-modal:hover { background-color: #dee2e6 !important; }
+
+        /* Botones de Envío Dinámicos */
+        .btn-enviar-rojo { background: linear-gradient(135deg, #ff6b6b, #dc3545) !important; border: none !important; border-radius: 8px !important; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(220, 53, 69, 0.25); }
+        .btn-enviar-rojo:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4); }
+        
+        .btn-enviar-celeste { background: linear-gradient(135deg, #0fe3ff, #0dcaf0) !important; border: none !important; border-radius: 8px !important; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(13, 202, 240, 0.25); }
+        .btn-enviar-celeste:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(13, 202, 240, 0.4); }
+
+        .btn-enviar-amarillo { background: linear-gradient(135deg, #ffe066, #ffc800) !important; border: none !important; border-radius: 8px !important; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(255, 200, 0, 0.25); }
+        .btn-enviar-amarillo:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 200, 0, 0.4); }
+    </style>
     <!-- Portfolio Grid-->
     <section class="page-section bg-light" id="portfolio">
         <div class="container">
