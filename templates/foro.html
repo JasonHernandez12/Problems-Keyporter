@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Foro Estudiantil - Key Institute</title>
+    <link rel="icon" type="image/x-icon" href="../static/img/otrologo.png" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .navbar {
+            background-color: #212529;
+        }
+
+        .forum-sidebar .list-group-item {
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 16px;
+        }
+
+        .forum-sidebar .list-group-item.active {
+            background-color: #ffc107;
+            color: #212529;
+            font-weight: bold;
+        }
+
+        .post-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .post-author {
+            font-weight: bold;
+            color: #1d4ed8;
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .reaction-btn {
+            background: none;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 5px;
+            margin-top: 10px;
+        }
+
+        .reaction-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .reaction-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .reaction-emoji {
+            font-size: 1.1rem;
+            margin-right: 3px;
+        }
+
+        .alert-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            max-width: 380px;
+        }
+
+        .upload-zone {
+            border: 2px dashed #ced4da;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag-over {
+            border-color: #ffc107;
+            background-color: #fffbeb;
+            color: #333;
+        }
+
+        .upload-zone i {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 6px;
+            color: #adb5bd;
+        }
+
+        .upload-zone.drag-over i {
+            color: #ffc107;
+        }
+
+        #archivo-input {
+            display: none;
+        }
+
+        #file-preview {
+            margin-top: 10px;
+        }
+
+        .file-preview-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #e9f5ff;
+            border: 1px solid #b6d4fe;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+        }
+
+        .file-preview-box img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .file-preview-box .file-icon {
+            font-size: 2rem;
+        }
+
+        .file-preview-box .file-info {
+            flex-grow: 1;
+        }
+
+        .file-preview-box .file-name {
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .file-preview-box .file-size {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .btn-remove-file {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+
+        .post-attachment {
+            margin-top: 14px;
+        }
+
+        .post-attachment img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .post-attachment img:hover {
+            opacity: 0.92;
+        }
+
+        .post-attachment .file-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f1f3f5;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #343a40;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .post-attachment .file-link:hover {
+            background: #e2e6ea;
+        }
+
+        .post-attachment .file-link i {
+            font-size: 1.4rem;
+        }
+
+        #img-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+
+        #img-modal-overlay.show {
+            display: flex;
+        }
+
+        #img-modal-overlay img {
+            max-width: 92vw;
+            max-height: 88vh;
+            border-radius: 10px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        #img-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            color: #fff;
+            font-size: 2.2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.6s linear infinite;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .char-count {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-align: right;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Key Institute</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{{ url_for('foro') }}">Foro</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-danger" href="{{ url_for('logout') }}"><i
+                                class="fas fa-sign-out-alt"></i> Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flashes -->
+    <div class="alert-toast">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show shadow" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Modal imagen ampliada -->
+    <div id="img-modal-overlay" onclick="cerrarModal()">
+        <span id="img-modal-close" onclick="cerrarModal()">&times;</span>
+        <img id="img-modal-src" src="" alt="Imagen ampliada">
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+
+            <!-- Sidebar categorías -->
+            <div class="col-md-3 mb-4">
+                <h5 class="mb-3 text-dark fw-bold"><i class="fas fa-list me-2"></i>Categorías</h5>
+                <div class="list-group forum-sidebar shadow-sm rounded">
+                    {% for cat in categorias %}
+                    <a href="{{ url_for('foro', categoria=cat) }}"
+                        class="list-group-item list-group-item-action {% if categoria_actual == cat %}active{% endif %}">
+                        {{ cat }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Feed -->
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-dark mb-0">Foro: <span class="text-warning">{{ categoria_actual }}</span></h3>
+                </div>
+
+                <!-- Caja de publicación -->
+                <div class="card post-card p-4 mb-4">
+                    <form action="{{ url_for('publicar_foro') }}" method="POST" enctype="multipart/form-data"
+                        id="form-publicar">
+                        <input type="hidden" name="categoria" value="{{ categoria_actual }}">
+
+                        <div class="mb-3">
+                            <textarea class="form-control border-0 bg-light" name="mensaje" id="campo-mensaje" rows="3"
+                                placeholder="¿Qué estás pensando? Escribe algo para {{ categoria_actual }}..."
+                                maxlength="5000" style="resize: none;"></textarea>
+                            <div class="char-count"><span id="char-count">0</span>/5000</div>
+                        </div>
+
+                        <!-- Drag & drop -->
+                        <div class="upload-zone" id="upload-zone"
+                            onclick="document.getElementById('archivo-input').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Arrastra una foto o archivo aquí, o <strong>haz clic para seleccionar</strong>
+                            <br><small class="text-muted mt-1 d-block">PNG, JPG, GIF, PDF, DOCX, XLSX, ZIP, RAR (máx. 16
+                                MB)</small>
+                        </div>
+                        <input type="file" name="archivo" id="archivo-input"
+                            accept=".png,.jpg,.jpeg,.gif,.pdf,.docx,.xlsx,.zip,.rar">
+
+                        <div id="file-preview"></div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill"
+                                onclick="abrirSelectorArchivo()">
+                                <i class="fas fa-paperclip"></i> Adjuntar archivo
+                            </button>
+                            <button type="submit" id="btn-publicar"
+                                class="btn btn-warning fw-bold text-dark px-4 rounded-pill">
+                                <i class="fas fa-paper-plane"></i> Publicar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Mensajes -->
+                {% if mensajes %}
+                {% for msg in mensajes %}
+                <div class="card post-card p-4">
+                    <div class="d-flex justify-content-between flex-wrap gap-1">
+                        <div class="post-author"><i class="fas fa-user-circle me-2"></i>{{ msg.autor }}</div>
+                        <div class="post-date"><i class="far fa-clock me-1"></i>{{ msg.fecha }}</div>
+                    </div>
+
+                    {% if msg.mensaje %}
+                    <div class="mt-3 text-dark"
+                        style="font-size: 1.05rem; white-space: pre-wrap; overflow-wrap: break-word;">{{ msg.mensaje | e
+                        }}</div>
+                    {% endif %}
+
+                    <!-- Archivo adjunto -->
+                    {% if msg.archivo_adjunto %}
+                    <div class="post-attachment">
+                        {% set ext = msg.archivo_adjunto.rsplit('.', 1)[-1].lower() %}
+                        {% if ext in ['png', 'jpg', 'jpeg', 'gif'] %}
+                        <img src="{{ url_for('static', filename='uploads/foro/' + msg.archivo_adjunto) }}"
+                            alt="Imagen adjunta" onclick="abrirModal(this.src)" title="Haz clic para ampliar"
+                            loading="lazy">
+                        {% elif ext == 'pdf' %}
+                        <a href="{{ url_for('static', filename='uploads/foro/' + msg.archivo_adjunto) }}"
+                            target="_blank" rel="noopener noreferrer" class="file-link">
+                            <i class="fas fa-file-pdf text-danger"></i>
+                            {% set filename = msg.archivo_adjunto.split('_', 1)[-1] %}
+                            <span title="{{ filename | e }}">{{ filename | e }}</span>
+                            <small class="text-muted ms-2">Ver PDF</small>
+                        </a>
+                        {% elif ext in ['docx', 'doc'] %}
+                        <a href="{{ url_for('static', filename='uploads/foro/' + msg.archivo_adjunto) }}" download
+                            class="file-link" rel="noopener noreferrer">
+                            <i class="fas fa-file-word text-primary"></i>
+                            {% set filename = msg.archivo_adjunto.split('_', 1)[-1] %}
+                            <span title="{{ filename | e }}">{{ filename | e }}</span>
+                            <small class="text-muted ms-2">Descargar</small>
+                        </a>
+                        {% elif ext in ['xlsx', 'xls'] %}
+                        <a href="{{ url_for('static', filename='uploads/foro/' + msg.archivo_adjunto) }}" download
+                            class="file-link" rel="noopener noreferrer">
+                            <i class="fas fa-file-excel text-success"></i>
+                            {% set filename = msg.archivo_adjunto.split('_', 1)[-1] %}
+                            <span title="{{ filename | e }}">{{ filename | e }}</span>
+                            <small class="text-muted ms-2">Descargar</small>
+                        </a>
+                        {% elif ext in ['zip', 'rar'] %}
+                        <a href="{{ url_for('static', filename='uploads/foro/' + msg.archivo_adjunto) }}" download
+                            class="file-link" rel="noopener noreferrer">
+                            <i class="fas fa-file-archive text-warning"></i>
+                            {% set filename = msg.archivo_adjunto.split('_', 1)[-1] %}
+                            <span title="{{ filename | e }}">{{ filename | e }}</span>
+                            <small class="text-muted ms-2">Descargar</small>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('static', filename='uploads/foro/' + msg.archivo_adjunto) }}" download
+                            class="file-link" rel="noopener noreferrer">
+                            <i class="fas fa-file text-secondary"></i>
+                            {% set filename = msg.archivo_adjunto.split('_', 1)[-1] %}
+                            <span title="{{ filename | e }}">{{ filename | e }}</span>
+                            <small class="text-muted ms-2">Descargar</small>
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Reacciones -->
+                    <div class="mt-2">
+                        <button class="reaction-btn" onclick="reaccionar({{ msg.id_mensaje }}, 'Me gusta')"
+                            type="button" aria-label="Me gusta">
+                            <span class="reaction-emoji">👍</span> Me gusta
+                            <span class="badge bg-secondary ms-1">{{ msg.reacciones.get('Me gusta', 0) }}</span>
+                        </button>
+                        <button class="reaction-btn" onclick="reaccionar({{ msg.id_mensaje }}, 'Me encanta')"
+                            type="button" aria-label="Me encanta">
+                            <span class="reaction-emoji">❤️</span> Me encanta
+                            <span class="badge bg-secondary ms-1">{{ msg.reacciones.get('Me encanta', 0) }}</span>
+                        </button>
+                        <button class="reaction-btn" onclick="reaccionar({{ msg.id_mensaje }}, 'Me divierte')"
+                            type="button" aria-label="Me divierte">
+                            <span class="reaction-emoji">😆</span> Me divierte
+                            <span class="badge bg-secondary ms-1">{{ msg.reacciones.get('Me divierte', 0) }}</span>
+                        </button>
+                        <button class="reaction-btn" onclick="reaccionar({{ msg.id_mensaje }}, 'Me entristece')"
+                            type="button" aria-label="Me entristece">
+                            <span class="reaction-emoji">😢</span> Me entristece
+                            <span class="badge bg-secondary ms-1">{{ msg.reacciones.get('Me entristece', 0) }}</span>
+                        </button>
+                        <button class="reaction-btn" onclick="reaccionar({{ msg.id_mensaje }}, 'Me enoja')"
+                            type="button" aria-label="Me enoja">
+                            <span class="reaction-emoji">😡</span> Me enoja
+                            <span class="badge bg-secondary ms-1">{{ msg.reacciones.get('Me enoja', 0) }}</span>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="text-center mt-5 text-muted">
+                    <i class="fas fa-comments fa-4x mb-3"></i>
+                    <h4>No hay mensajes en esta categoría.</h4>
+                    <p>¡Sé el primero en publicar algo!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        'use strict';
+
+        // ── CONSTANTES ──────────────────────────────────────────────
+        const LIMITE_MB = 16;
+        const EXTENSIONES_PERMITIDAS = ['png', 'jpg', 'jpeg', 'gif', 'pdf', 'docx', 'doc', 'xlsx', 'xls', 'zip', 'rar'];
+        const LIMITE_CARACTERES = 5000;
+        const TIMEOUT_REACCION = 1000;
+
+        // ── ELEMENTOS DEL DOM ───────────────────────────────────────
+        const archivoInput = document.getElementById('archivo-input');
+        const uploadZone = document.getElementById('upload-zone');
+        const filePreview = document.getElementById('file-preview');
+        const formPublicar = document.getElementById('form-publicar');
+        const btnPublicar = document.getElementById('btn-publicar');
+        const campoMensaje = document.getElementById('campo-mensaje');
+        const charCount = document.getElementById('char-count');
+
+        // ── ESTADO GLOBAL ───────────────────────────────────────────
+        let ultimoClickReaccion = 0;
+
+        // ── CONTADOR DE CARACTERES ──────────────────────────────────
+        campoMensaje.addEventListener('input', function () {
+            charCount.textContent = this.value.length;
+        });
+
+        // ── PREVIEW DE ARCHIVO ──────────────────────────────────────
+        archivoInput.addEventListener('change', function () {
+            mostrarPreview(this.files[0]);
+        });
+
+        function mostrarPreview(file) {
+            filePreview.innerHTML = '';
+            if (!file) return;
+
+            // Validar tamaño
+            if (file.size > LIMITE_MB * 1024 * 1024) {
+                mostrarError('El archivo supera el límite de ' + LIMITE_MB + ' MB.');
+                archivoInput.value = '';
+                return;
+            }
+
+            // Validar extensión
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!EXTENSIONES_PERMITIDAS.includes(ext)) {
+                mostrarError('Tipo de archivo no permitido.');
+                archivoInput.value = '';
+                return;
+            }
+
+            const box = document.createElement('div');
+            box.className = 'file-preview-box';
+
+            // Preview de imagen
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.alt = 'Preview del archivo';
+                box.appendChild(img);
+            } else {
+                const icon = document.createElement('span');
+                icon.className = 'file-icon';
+                icon.textContent = obtenerIconoPorExtension(file.name);
+                box.appendChild(icon);
+            }
+
+            // Información del archivo
+            const info = document.createElement('div');
+            info.className = 'file-info';
+            const nombreArchivo = document.createElement('div');
+            nombreArchivo.className = 'file-name';
+            nombreArchivo.textContent = file.name;
+            nombreArchivo.title = file.name;
+
+            const tamanoArchivo = document.createElement('div');
+            tamanoArchivo.className = 'file-size';
+            tamanoArchivo.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+            info.appendChild(nombreArchivo);
+            info.appendChild(tamanoArchivo);
+            box.appendChild(info);
+
+            // Botón para remover
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-remove-file';
+            btn.innerHTML = '<i class="fas fa-times-circle"></i>';
+            btn.title = 'Quitar archivo';
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                archivoInput.value = '';
+                filePreview.innerHTML = '';
+            });
+            box.appendChild(btn);
+
+            filePreview.appendChild(box);
+        }
+
+        function obtenerIconoPorExtension(nombre) {
+            const ext = nombre.split('.').pop().toLowerCase();
+            const iconos = {
+                pdf: '📄',
+                docx: '📝',
+                doc: '📝',
+                xlsx: '📊',
+                xls: '📊',
+                zip: '🗜️',
+                rar: '🗜️'
+            };
+            return iconos[ext] || '📁';
+        }
+
+        // ── DRAG & DROP ─────────────────────────────────────────────
+        uploadZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            uploadZone.classList.add('drag-over');
+        });
+
+        uploadZone.addEventListener('dragleave', function () {
+            uploadZone.classList.remove('drag-over');
+        });
+
+        uploadZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                archivoInput.files = dt.files;
+                mostrarPreview(file);
+            }
+        });
+
+        // ── VALIDACIÓN AL ENVIAR ────────────────────────────────────
+        formPublicar.addEventListener('submit', function (e) {
+            const texto = campoMensaje.value.trim();
+            const archivo = archivoInput.files[0];
+
+            if (!texto && !archivo) {
+                e.preventDefault();
+                mostrarError('Debes escribir un mensaje o adjuntar un archivo antes de publicar.');
+                return;
+            }
+
+            btnPublicar.disabled = true;
+            const btnText = btnPublicar.innerHTML;
+            btnPublicar.innerHTML = '<span class="loading-spinner"></span>Publicando...';
+
+            setTimeout(function () {
+                btnPublicar.disabled = false;
+                btnPublicar.innerHTML = btnText;
+            }, 3000);
+        });
+
+        // ── ABRIR SELECTOR DE ARCHIVO ───────────────────────────────
+        function abrirSelectorArchivo() {
+            archivoInput.click();
+        }
+
+        // ── REACCIONES ──────────────────────────────────────────────
+        function reaccionar(idMensaje, tipoReaccion) {
+            const ahora = Date.now();
+            if (ahora - ultimoClickReaccion < TIMEOUT_REACCION) {
+                return;
+            }
+            ultimoClickReaccion = ahora;
+
+            const urlReaccionar = "{{ url_for('reaccionar_foro') }}";
+
+            fetch(urlReaccionar, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'id_mensaje': idMensaje,
+                    'tipo_reaccion': tipoReaccion
+                })
+            })
+                .then(function (respuesta) {
+                    if (!respuesta.ok) {
+                        throw new Error('Error HTTP: ' + respuesta.status);
+                    }
+                    return respuesta.json();
+                })
+                .then(function (datos) {
+                    if (datos.success) {
+                        window.location.reload();
+                    } else {
+                        mostrarError('Error al reaccionar: ' + (datos.message || 'Error desconocido'));
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error en reacción:', error);
+                    mostrarError('No se pudo procesar tu reacción. Intenta de nuevo.');
+                });
+        }
+
+        // ── MODAL IMAGEN ────────────────────────────────────────────
+        function abrirModal(src) {
+            if (!src) return;
+            document.getElementById('img-modal-src').src = src;
+            document.getElementById('img-modal-overlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModal() {
+            document.getElementById('img-modal-overlay').classList.remove('show');
+            document.getElementById('img-modal-src').src = '';
+            document.body.style.overflow = '';
+        }
+
+        // Cerrar modal con Escape
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                cerrarModal();
+            }
+        });
+
+        // ── UTILITARIOS ─────────────────────────────────────────────
+        function mostrarError(mensaje) {
+            alert(mensaje);
+        }
+    </script>
+</body>
+
+</html>
