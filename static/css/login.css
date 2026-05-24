@@ -23,9 +23,9 @@ body {
 }
 
 .form-control:focus {
-    background-color: #1a202c !important;
+    background-color: #1a202c;
     border-color: #3b82f6;
-    color: white !important;
+    color: white;
     box-shadow: none;
 }
 
@@ -46,80 +46,4 @@ body {
 
 input.form-control {
     border-radius: 0 10px 10px 0;
-}
-
-/* ==== Botón de recuperación moderno ==== */
-.btn-recovery {
-    background: transparent;
-    border: 1px solid #2d3748;
-    color: #10b981;
-    border-radius: 10px;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.btn-recovery:hover {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: #10b981;
-    transform: translateY(-1px);
-}
-
-/* ==== Modal de recuperación ==== */
-.recovery-modal {
-    background: #1e252f !important;
-    border-radius: 20px;
-    border: 1px solid #2d3748;
-    color: white;
-}
-
-.recovery-modal .modal-header,
-.recovery-modal .modal-body {
-    background: #1e252f;
-    color: white;
-}
-
-.recovery-icon {
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
-    width: 60px;
-    height: 60px;
-    margin: 0 auto;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Inputs dentro del modal */
-.recovery-modal .form-control {
-    background-color: transparent !important;
-    color: white !important;
-}
-
-.recovery-modal .form-control::placeholder {
-    color: #64748b;
-}
-
-.recovery-modal .input-group-text {
-    background-color: transparent;
-}
-
-/* ==== Spinner de carga ==== */
-.spinner-mini {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(255, 255, 255, .3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    margin-right: 8px;
-    vertical-align: middle;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
 }
