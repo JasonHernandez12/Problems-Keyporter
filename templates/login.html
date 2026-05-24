@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
+
 <body class="d-flex align-items-center justify-content-center vh-100">
 
     <div class="login-card shadow-lg p-4 text-center">
         <div class="logo-container mb-3">
             <div class="logo-box">
-                <i class="bi bi-asterisk text-white fs-1"></i> 
+                <i class="bi bi-asterisk text-white fs-1"></i>
             </div>
         </div>
 
@@ -22,11 +24,11 @@
         <p class="text-secondary small mb-4">Portal de Autenticación</p>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }} py-2 small">{{ message }}</div>
-            {% endfor %}
-          {% endif %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} py-2 small">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
 
         <form action="/login" method="POST">
@@ -35,8 +37,9 @@
                 <span class="input-group-text bg-transparent border-secondary border-end-0 text-secondary">
                     <i class="bi bi-envelope"></i>
                 </span>
-                <input type="email" name="email" class="form-control bg-transparent border-secondary border-start-0 text-white" 
-                       placeholder="nombre.apellido@keyinstitute.edu.sv" required>
+                <input type="email" name="email"
+                    class="form-control bg-transparent border-secondary border-start-0 text-white"
+                    placeholder="nombre.apellido@keyinstitute.edu.sv" required>
             </div>
 
             <label class="text-secondary d-block text-start mb-2 small">Contraseña</label>
@@ -44,17 +47,102 @@
                 <span class="input-group-text bg-transparent border-secondary border-end-0 text-secondary">
                     <i class="bi bi-lock"></i>
                 </span>
-                <input type="password" name="password" class="form-control bg-transparent border-secondary border-start-0 text-white" 
-                       placeholder="********" required>
+                <input type="password" name="password"
+                    class="form-control bg-transparent border-secondary border-start-0 text-white"
+                    placeholder="********" required>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 mb-4 py-2">Siguiente <i class="bi bi-arrow-right ms-2"></i></button>
+            <button type="submit" class="btn btn-primary w-100 mb-4 py-2">Siguiente <i
+                    class="bi bi-arrow-right ms-2"></i></button>
         </form>
 
-        <a href="#" class="text-decoration-none text-success small">
+        <!-- BOTÓN RECUPERAR CONTRASEÑA -->
+        <button type="button" class="btn btn-outline-success btn-sm w-100" data-bs-toggle="modal"
+            data-bs-target="#modalRecuperar">
             <i class="bi bi-shield-lock me-1"></i> Conexión protegida / Recuperar contraseña
-        </a>
+        </button>
     </div>
 
+    <!-- MODAL RECUPERAR CONTRASEÑA -->
+    <div class="modal fade" id="modalRecuperar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">
+                        <i class="bi bi-shield-lock me-2 text-success"></i>Recuperar Contraseña
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-secondary small">Ingresa tu correo institucional y te enviaremos un enlace para
+                        restablecer tu contraseña.</p>
+
+                    <div id="recovery-message" class="mb-3" style="display:none;"></div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-transparent border-secondary text-secondary">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input type="email" id="recovery-email"
+                            class="form-control bg-transparent border-secondary text-white"
+                            placeholder="nombre.apellido@keyinstitute.edu.sv">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="btn-enviar-recuperacion">
+                        <i class="bi bi-send me-1"></i> Enviar enlace
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('btn-enviar-recuperacion').addEventListener('click', function () {
+            const email = document.getElementById('recovery-email').value.trim();
+            const msgBox = document.getElementById('recovery-message');
+
+            if (!email) {
+                msgBox.style.display = 'block';
+                msgBox.className = 'alert alert-danger small';
+                msgBox.textContent = 'Por favor ingresa tu correo.';
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Enviando...';
+
+            fetch('/recover-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+                .then(r => r.json())
+                .then(data => {
+                    msgBox.style.display = 'block';
+                    if (data.success) {
+                        msgBox.className = 'alert alert-success small';
+                        msgBox.textContent = '✅ ' + data.message;
+                        document.getElementById('recovery-email').value = '';
+                    } else {
+                        msgBox.className = 'alert alert-danger small';
+                        msgBox.textContent = '❌ ' + data.message;
+                    }
+                    this.disabled = false;
+                    this.innerHTML = '<i class="bi bi-send me-1"></i> Enviar enlace';
+                })
+                .catch(() => {
+                    msgBox.style.display = 'block';
+                    msgBox.className = 'alert alert-danger small';
+                    msgBox.textContent = '❌ Error de conexión.';
+                    this.disabled = false;
+                    this.innerHTML = '<i class="bi bi-send me-1"></i> Enviar enlace';
+                });
+        });
+    </script>
+
 </body>
+
 </html>

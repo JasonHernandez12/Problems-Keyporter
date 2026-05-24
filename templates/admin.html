@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Panel Administrativo - Key Institute</title>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_profe.css') }}">
 </head>
+
 <body>
     <nav class="navbar navbar-dark bg-dark mb-4">
         <div class="container">
@@ -17,8 +19,20 @@
 
     <div class="main-content container">
         <h1 class="text-white fw-bold mb-4">Gestión de Usuarios</h1>
-        
+
         <div class="glass-card">
+
+            <div class="d-flex justify-content-end gap-2 mb-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                    data-bs-target="#modalAgregarUsuario">
+                    <i class="bi bi-person-plus-fill me-2"></i>Agregar Usuario
+                </button>
+
+                <button type="button" class="btn btn-danger" id="btnAbrirModalEliminar">
+                    <i class="bi bi-trash-fill me-2"></i>Borrar Usuario
+                </button>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -32,18 +46,22 @@
                     <tbody>
                         {% for u in usuarios %}
                         <tr>
-                            <td class="text-white">{{ u[1] }}</td>
-                            <td class="text-white-50">{{ u[2] }}</td>
+                            <td class="text-dark">{{ u[1] }}</td>
+                            <td class="text-dark-50">{{ u[2] }}</td>
                             <td>
                                 <span class="badge {% if u[3] == 'Maestro' %}bg-primary{% else %}bg-info{% endif %}">
                                     {{ u[3] }}
                                 </span>
                             </td>
                             <td>
-                                <form action="{{ url_for('cambiar_rol', id_usuario=u[0]) }}" method="POST" class="d-flex gap-2">
-                                    <select name="nuevo_rol" class="form-select form-select-sm bg-dark text-white border-secondary">
-                                        <option value="Alumno" {% if u[3] == 'Alumno' %}selected{% endif %}>Estudiante</option>
-                                        <option value="Maestro" {% if u[3] == 'Maestro' %}selected{% endif %}>Docente</option>
+                                <form action="{{ url_for('cambiar_rol', id_usuario=u[0]) }}" method="POST"
+                                    class="d-flex gap-2">
+                                    <select name="nuevo_rol"
+                                        class="form-select form-select-sm bg-dark text-white border-secondary">
+                                        <option value="Alumno" {% if u[3]=='Alumno' %}selected{% endif %}>Estudiante
+                                        </option>
+                                        <option value="Maestro" {% if u[3]=='Maestro' %}selected{% endif %}>Docente
+                                        </option>
                                     </select>
                                     <button type="submit" class="btn btn-sm btn-success">
                                         <i class="bi bi-check-lg"></i>
@@ -57,5 +75,126 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal para agregar nuevo usuario -->
+    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-labelledby="modalAgregarUsuarioLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="modalAgregarUsuarioLabel">
+                        <i class="bi bi-person-plus-fill me-2"></i>Agregar Nuevo Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+
+                <form action="{{ url_for('agregar_usuario') }}" method="POST">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control bg-dark text-white border-secondary" id="correo"
+                                name="correo" placeholder="ejemplo@keyinstitute.edu.sv" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control bg-dark text-white border-secondary"
+                                id="password" name="password" placeholder="Ingrese una contraseña" required>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-lg me-1"></i>Guardar Usuario
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar usuario -->
+    <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="modalEliminarUsuarioLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="modalEliminarUsuarioLabel">
+                        <i class="bi bi-trash-fill me-2"></i>Borrar Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+
+                <form action="{{ url_for('eliminar_usuario') }}" method="POST">
+                    <div class="modal-body">
+
+                        <p class="text-white-50">
+                            Selecciona el usuario que deseas eliminar.
+                        </p>
+
+                        <div class="mb-3">
+                            <label for="id_usuario" class="form-label">Usuario</label>
+                            <select name="id_usuario" id="id_usuario"
+                                class="form-select bg-dark text-white border-secondary" required>
+                                <option value="" selected disabled>Selecciona un usuario</option>
+
+                                {% for u in usuarios %}
+                                <option value="{{ u[0] }}">
+                                    {{ u[1] }} - {{ u[2] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="alert alert-danger mb-0">
+                            Esta acción eliminará al usuario de la base de datos.
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('¿Estás seguro de que deseas borrar este usuario?');">
+                            <i class="bi bi-trash-fill me-1"></i>Borrar Usuario
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnEliminar = document.getElementById('btnAbrirModalEliminar');
+            const modalEliminar = document.getElementById('modalEliminarUsuario');
+
+            if (btnEliminar && modalEliminar) {
+                btnEliminar.addEventListener('click', function () {
+                    const modal = new bootstrap.Modal(modalEliminar);
+                    modal.show();
+                });
+            }
+        });
+    </script>
+
 </body>
+
 </html>
