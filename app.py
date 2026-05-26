@@ -1,3 +1,10 @@
+# ============================================================
+#  KEY INSTITUTE — app.py
+#  Código COMPLETO, solo reordenado: el FORO ESTUDIANTIL quedó
+#  al final, ordenado según el diagrama de flujo, para exponerlo
+#  de corrido sin subir y bajar. No se borró nada del resto.
+# ============================================================
+
 import os
 import re
 import smtplib
@@ -30,9 +37,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'docx', 'xlsx', 'zip',
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = os.getenv('OUTLOOK_EMAIL')
@@ -41,49 +45,6 @@ SMTP_PASSWORD = os.getenv('OUTLOOK_PASSWORD')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def es_mensaje_toxico(texto, file_path=None):
-    load_dotenv(override=True)
-    api_key = os.getenv('GEMINI_API_KEY')
-    
-    if not api_key:
-        logger.warning("Falta GEMINI_API_KEY en .env, dejando pasar el mensaje...")
-        return False
-        
-    try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        
-        safety_settings = [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
-        ]
-        
-        prompt = f"Eres un moderador extremadamente estricto de una escuela. Analiza el siguiente contenido. Responde ÚNICAMENTE con la palabra 'TOXICO' si contiene groserías, palabras inapropiadas, alusiones sexuales (como 'sexo', 'gay' usado como insulto, etc), violencia explícita, insultos o acoso. Si el mensaje y/o la imagen son 100% amigables y normales, responde 'SEGURO'. Mensaje a analizar: '{texto}'"
-        
-        contents = [prompt]
-        if file_path:
-            ext = file_path.rsplit('.', 1)[1].lower()
-            if ext in {'png', 'jpg', 'jpeg', 'gif'}:
-                img = PIL.Image.open(file_path)
-                contents.append(img)
-                
-        response = model.generate_content(contents, safety_settings=safety_settings)
-        resultado = response.text.strip().upper()
-        logger.info(f"Gemini respondió: {resultado} para el mensaje: {texto} con archivo: {file_path}")
-        
-        if "TOXICO" in resultado or "TÓXICO" in resultado:
-            return True
-        return False
-        
-    except Exception as e:
-        error_msg = str(e).lower()
-        logger.error(f"Error con Gemini: {error_msg}")
-        if "safety" in error_msg or "blocked" in error_msg or "candidate" in error_msg or "valueerror" in error_msg:
-            return True
-        return False
-
 
 # ============================================================
 # CONEXIÓN A BASE DE DATOS
@@ -91,11 +52,7 @@ def es_mensaje_toxico(texto, file_path=None):
 def get_db_connection():
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-<<<<<<< HEAD
-        'SERVER=ADRIAN_SO\\SQLEXPRESS;'
-=======
         'SERVER=7GUERRERO\\SQLEXPRESS;'
->>>>>>> 69a1cd9881d1eee7062e8fadffeeed45d64d6371
         'DATABASE=KeyInstituteDB;'
         'Trusted_Connection=yes;'
     )
@@ -202,7 +159,7 @@ def login():
                     is_valid_password = check_password_hash(stored_password, password)
                 else:
                     is_valid_password = (stored_password == password)
-                
+
                 if is_valid_password:
                     session['user_id'] = user[0]
                     session['username'] = user[1]
@@ -487,23 +444,41 @@ def eliminar_usuario():
 
 
 # ============================================================
-# FORO ESTUDIANTIL
+# CERRAR SESIÓN
 # ============================================================
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
+# ============================================================
+#  FORO ESTUDIANTIL  (esta es mi parte — ordenada según el
+#  diagrama de flujo, de arriba hacia abajo)
+# ============================================================
+
+# Categorías que aparecen en la barra lateral del foro
 CATEGORIAS_FORO = [
     'General', 'Cohorte 1', 'Cohorte 2', 'Cohorte 3',
     'Wellness', 'Injusticias', 'Dudas', 'Clases',
     'Horas Key', 'Platzi', 'Co-curriculares', 'Book Club', 'Clubes', 'Memes'
 ]
 
+
+# ------------------------------------------------------------
+#  PASO 1-3 — ENTRAR AL FORO Y VER EL FEED
+# ------------------------------------------------------------
 @app.route('/foro', methods=['GET'])
 @app.route('/foro/<categoria>', methods=['GET'])
 def foro(categoria='General'):
+    # PASO 2 — ¿Sesión iniciada?
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
+
     if categoria not in CATEGORIAS_FORO:
         categoria = 'General'
 
+    # PASO 3 — Cargar los mensajes de la categoría con el nombre del autor
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -514,7 +489,7 @@ def foro(categoria='General'):
         ORDER BY M.fecha_publicacion DESC
     """, (categoria,))
     mensajes_db = cursor.fetchall()
-    
+
     mensajes = []
     for msg in mensajes_db:
         id_msg = msg[0]
@@ -534,30 +509,91 @@ def foro(categoria='General'):
             'archivo_adjunto': msg[4],
             'reacciones': reacciones
         })
-        
+
     conn.close()
+    # PASO 9 — Mostrar el feed en la plantilla
     return render_template('foro.html', mensajes=mensajes, categorias=CATEGORIAS_FORO, categoria_actual=categoria)
 
 
+# ------------------------------------------------------------
+#  FUNCIONES DE APOYO PARA PUBLICAR
+# ------------------------------------------------------------
+
+# Valida que la extensión del archivo esté permitida
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+# ▶ PASO 7 — MODERACIÓN CON IA (Gemini): revisa texto y, si hay, la imagen
+def es_mensaje_toxico(texto, file_path=None):
+    load_dotenv(override=True)
+    api_key = os.getenv('GEMINI_API_KEY')
+
+    if not api_key:
+        logger.warning("Falta GEMINI_API_KEY en .env, dejando pasar el mensaje...")
+        return False
+
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-2.5-flash')
+
+        safety_settings = [
+            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+        ]
+
+        prompt = f"Eres un moderador extremadamente estricto de una escuela. Analiza el siguiente contenido. Responde ÚNICAMENTE con la palabra 'TOXICO' si contiene groserías, palabras inapropiadas, alusiones sexuales (como 'sexo', 'gay' usado como insulto, etc), violencia explícita, insultos o acoso. Si el mensaje y/o la imagen son 100% amigables y normales, responde 'SEGURO'. Mensaje a analizar: '{texto}'"
+
+        contents = [prompt]
+        if file_path:
+            ext = file_path.rsplit('.', 1)[1].lower()
+            if ext in {'png', 'jpg', 'jpeg', 'gif'}:
+                img = PIL.Image.open(file_path)
+                contents.append(img)
+
+        response = model.generate_content(contents, safety_settings=safety_settings)
+        resultado = response.text.strip().upper()
+        logger.info(f"Gemini respondió: {resultado} para el mensaje: {texto} con archivo: {file_path}")
+
+        if "TOXICO" in resultado or "TÓXICO" in resultado:
+            return True
+        return False
+
+    except Exception as e:
+        error_msg = str(e).lower()
+        logger.error(f"Error con Gemini: {error_msg}")
+        if "safety" in error_msg or "blocked" in error_msg or "candidate" in error_msg or "valueerror" in error_msg:
+            return True
+        return False
+
+
+# ------------------------------------------------------------
+#  PASO 4-8 — PUBLICAR UN MENSAJE
+# ------------------------------------------------------------
 @app.route('/foro/publicar', methods=['POST'])
 def publicar_foro():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-        
+
+    # PASO 4 — Recibir lo que envió el usuario
     mensaje = request.form.get('mensaje', '')
     categoria = request.form.get('categoria', 'General')
     archivo = request.files.get('archivo')
-    
+
     tiene_texto   = len(mensaje.strip()) > 0
     tiene_archivo = archivo and archivo.filename != ''
 
+    # PASO 5 — No se puede publicar vacío
     if not tiene_texto and not tiene_archivo:
         flash('Debes escribir un mensaje o adjuntar un archivo.', 'danger')
         return redirect(url_for('foro', categoria=categoria))
 
     nombre_archivo_guardado = None
     ruta_completa = None
-    
+
+    # PASO 6 — Guardar el archivo de forma segura
     if tiene_archivo:
         if allowed_file(archivo.filename):
             import time
@@ -568,13 +604,15 @@ def publicar_foro():
         else:
             flash('Tipo de archivo no permitido.', 'danger')
             return redirect(url_for('foro', categoria=categoria))
-        
+
+    # PASO 7 — Moderar con IA. Si es tóxico, borra el archivo y bloquea
     if es_mensaje_toxico(mensaje, ruta_completa):
         if ruta_completa and os.path.exists(ruta_completa):
             os.remove(ruta_completa)
         flash('Tu mensaje viola las normas de la comunidad y ha sido bloqueado por nuestra IA de moderación.', 'danger')
         return redirect(url_for('foro', categoria=categoria))
-        
+
+    # PASO 8 — Solo si pasó el filtro, se inserta en la base de datos
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -587,29 +625,35 @@ def publicar_foro():
         flash('Mensaje publicado correctamente.', 'success')
     except Exception as e:
         flash(f'Error al publicar: {str(e)}', 'danger')
-        
+
     return redirect(url_for('foro', categoria=categoria))
 
 
+# ------------------------------------------------------------
+#  ▶ FLUJO APARTE — REACCIONAR (sin recargar la página)
+#    Lo llama el JavaScript con fetch y devuelve JSON.
+#    Toggle de 3 caminos: misma reacción la quita, otra la cambia,
+#    ninguna todavía la crea.
+# ------------------------------------------------------------
 @app.route('/foro/reaccionar', methods=['POST'])
 def reaccionar_foro():
     if 'user_id' not in session:
         return jsonify({'success': False, 'message': 'No autorizado'}), 401
-        
+
     data = request.get_json()
     id_mensaje = data.get('id_mensaje')
     tipo_reaccion = data.get('tipo_reaccion')
-    
+
     reacciones_validas = ['Me divierte', 'Me encanta', 'Me gusta', 'Me enoja', 'Me entristece']
     if tipo_reaccion not in reacciones_validas:
         return jsonify({'success': False, 'message': 'Reacción inválida'}), 400
-        
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT id_reaccion, tipo_reaccion FROM Foro_Reacciones WHERE id_mensaje = ? AND id_usuario = ?", (id_mensaje, session['user_id']))
         reaccion_existente = cursor.fetchone()
-        
+
         if reaccion_existente:
             if reaccion_existente[1] == tipo_reaccion:
                 cursor.execute("DELETE FROM Foro_Reacciones WHERE id_reaccion = ?", (reaccion_existente[0],))
@@ -617,21 +661,12 @@ def reaccionar_foro():
                 cursor.execute("UPDATE Foro_Reacciones SET tipo_reaccion = ? WHERE id_reaccion = ?", (tipo_reaccion, reaccion_existente[0]))
         else:
             cursor.execute("INSERT INTO Foro_Reacciones (id_mensaje, id_usuario, tipo_reaccion) VALUES (?, ?, ?)", (id_mensaje, session['user_id'], tipo_reaccion))
-            
+
         conn.commit()
         conn.close()
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
-
-
-# ============================================================
-# CERRAR SESIÓN
-# ============================================================
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
