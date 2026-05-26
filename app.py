@@ -261,32 +261,91 @@ def reset_password(token):
 # ============================================================
 # RUTA PARA PROCESAR LOS REPORTES
 # ============================================================
-@app.route('/crear_reporte', methods=['POST'])
-def crear_reporte():
+#  CÓDIGO CORREGIDO
+
+# Modifica la línea 184 de tu app.py para que quede EXACTAMENTE así:
+# ============================================================
+# RUTA PARA PROCESAR LOS REPORTES (CON DEBÚG ACTIVADO)
+# ============================================================
+# ============================================================
+# RUTA PARA PROCESAR LOS REPORTES (CORREGIDA Y BLINDADA)
+# ============================================================
+# ============================================================
+# 1. RUTA PARA INCIDENTES
+# ============================================================
+@app.route('/crear_reporte/incidente', methods=['POST'])
+def crear_reporte_incidente():
     if 'user_id' not in session:
         return redirect(url_for('login'))
+        
+    descripcion = request.form.get('descripcion', '').strip()
+    prioridad_raw = request.form.get('prioridad', 'leve').strip()
+    categoria = request.form.get('categoria', 'docentes').strip()
+    
+    # Normalizamos datos para tu panel administrativo
+    tipo = "Incidente"
+    titulo = "Incidente Reportado"
+    prioridad = "Grave" if prioridad_raw.lower() == "grave" else "Baja"
+    
+    return guardar_reporte_en_db(tipo, titulo, descripcion, prioridad, categoria)
 
-    tipo = request.form.get('tipo')
-    descripcion = request.form.get('descripcion')
-    prioridad = request.form.get('prioridad')
-    categoria = request.form.get('categoria')
-    titulo = request.form.get('titulo', 'Sin título')
+# ============================================================
+# 2. RUTA PARA SOPORTE
+# ============================================================
+@app.route('/crear_reporte/soporte', methods=['POST'])
+def crear_reporte_soporte():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    categoria = request.form.get('categoria', 'Soporte').strip()
+    titulo = request.form.get('titulo', 'Problema de Soporte').strip()
+    descripcion = request.form.get('descripcion', '').strip()
+    prioridad = "Media"
+    tipo = "Soporte"
+    
+    return guardar_reporte_en_db(tipo, titulo, descripcion, prioridad, categoria)
 
+# ============================================================
+# 3. RUTA PARA SUGERENCIAS
+# ============================================================
+@app.route('/crear_reporte/sugerencia', methods=['POST'])
+def crear_reporte_sugerencia():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    titulo = request.form.get('titulo', 'Nueva Sugerencia').strip()
+    descripcion = request.form.get('descripcion', '').strip()
+    prioridad = "Baja"
+    categoria = "General"
+    tipo = "Sugerencia"
+    
+    return guardar_reporte_en_db(tipo, titulo, descripcion, prioridad, categoria)
+
+
+# ============================================================
+# FUNCIÓN AUXILIAR PARA EVITAR REPETIR CÓDIGO DE BASE DE DATOS
+# ============================================================
+def guardar_reporte_en_db(tipo, titulo, descripcion, prioridad, categoria):
+    id_usuario = session['user_id']
+    
+    if not descripcion:
+        descripcion = "Sin detalles proporcionados."
+        
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO Reportes (tipo, categoria, titulo, descripcion, prioridad, id_usuario)
+            INSERT INTO Reportes (id_usuario, tipo, titulo, descripcion, prioridad, categoria)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (tipo, categoria, titulo, descripcion, prioridad, session['user_id']))
+        """, (id_usuario, tipo, titulo, descripcion, prioridad, categoria))
         conn.commit()
         conn.close()
-        flash('Reporte enviado correctamente. ¡Gracias por tu aporte!', 'success')
+        flash('Reporte enviado exitosamente', 'success')
     except Exception as e:
-        flash(f'Error al enviar reporte: {str(e)}', 'danger')
-
+        print(f"\n❌ [ERROR REAL EN BASE DE DATOS] {str(e)}\n")
+        flash(f'Error al guardar reporte: {str(e)}', 'danger')
+        
     return redirect(url_for('index'))
-
 
 # ============================================================
 # VISTA DEL ALUMNO

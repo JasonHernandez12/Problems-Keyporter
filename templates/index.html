@@ -144,7 +144,7 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="POST">
+                <form action="/crear_reporte/incidente" method="POST">
                     <div class="modal-body p-4 text-start bg-white">
                         <div class="mb-3">
                             <label for="tituloIncidente" class="form-label fw-bold small mb-1 label-modal-custom">TÍTULO DEL INCIDENTE</label>
@@ -192,7 +192,7 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="POST">
+                <form action="/crear_reporte/soporte" method="POST">
                     <div class="modal-body p-4 text-start bg-white">
                         <div class="mb-3">
                             <label for="tipoProblema" class="form-label fw-bold small mb-0 label-modal-custom">TIPO DE PROBLEMA</label>
@@ -230,7 +230,7 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="POST">
+               <form action="/crear_reporte/sugerencia" method="POST">
                     <div class="modal-body p-4 text-start bg-white">
                         <div class="mb-3">
                             <label for="areaSugerencia" class="form-label fw-bold small mb-1 label-modal-custom">ÁREA DE MEJORA</label>
@@ -535,7 +535,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/crear_reporte" method="POST">
+                    <form action="/crear_reporte/incidente" method="POST">
                         <!-- Identificador del tipo -->
                         <input type="hidden" name="tipo" value="Incidente">
 
@@ -581,7 +581,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/crear_reporte" method="POST">
+                        <form action="/crear_reporte/soporte" method="POST">
                         <input type="hidden" name="tipo" value="Soporte">
 
                         <div class="mb-3">
@@ -631,7 +631,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/crear_reporte" method="POST">
+                    <form action="/crear_reporte/sugerencia" method="POST">
                         <input type="hidden" name="tipo" value="Sugerencia">
                         <input type="hidden" name="prioridad" value="Baja">
                         <input type="hidden" name="categoria" value="General">
