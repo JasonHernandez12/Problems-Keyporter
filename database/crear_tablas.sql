@@ -76,3 +76,17 @@ BEGIN
     INSERT INTO Usuarios (nombre, email, password, rol) 
     VALUES ('Erick Varela', 'erick.varela@keyinstitute.edu.sv', 'admin123', 'Admin');
 END
+
+CREATE TABLE Respuestas (
+    id_respuesta INT IDENTITY(1,1) PRIMARY KEY,
+    id_reporte INT NOT NULL,
+    id_docente INT NOT NULL,
+    mensaje_respuesta VARCHAR(MAX) NOT NULL,
+    fecha_respuesta DATETIME DEFAULT GETDATE(),
+
+    CONSTRAINT FK_Respuestas_Reportes
+    FOREIGN KEY (id_reporte) REFERENCES Reportes(id_reporte),
+
+    CONSTRAINT FK_Respuestas_Docente
+    FOREIGN KEY (id_docente) REFERENCES Usuarios(id_usuario)
+);
