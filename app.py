@@ -1,9 +1,3 @@
-# ============================================================
-#  KEY INSTITUTE — app.py
-#  Código COMPLETO, solo reordenado: el FORO ESTUDIANTIL quedó
-#  al final, ordenado según el diagrama de flujo, para exponerlo
-#  de corrido sin subir y bajar. No se borró nada del resto.
-# ============================================================
 
 import os
 import re
@@ -13,7 +7,7 @@ import string
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+    
 import pyodbc
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -52,7 +46,7 @@ logger = logging.getLogger(__name__)
 def get_db_connection():
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=ELIEZERRDR\\SQLEXPRESS;'
+        'SERVER=7GUERRERO\\SQLEXPRESS;'
         'DATABASE=KeyInstituteDB;'
         'Trusted_Connection=yes;'
     )
