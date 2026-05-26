@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 def get_db_connection():
     conn_str = (
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=7GUERRERO\\SQLEXPRESS;'
+        'SERVER=GOGUILPTP\\SQLEXPRESS;'
         'DATABASE=KeyInstituteDB;'
         'Trusted_Connection=yes;'
     )
@@ -380,17 +380,30 @@ def responder_reporte(id_reporte):
 
     respuesta = request.form.get('respuesta')
 
+    if not respuesta or respuesta.strip() == '':
+        flash('Debes escribir una respuesta antes de enviarla.', 'danger')
+        return redirect(url_for('panel_profesor'))
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
+
         cursor.execute("""
-            INSERT INTO Respuestas (id_reporte, mensaje_respuesta)
-            VALUES (?, ?)
-        """, (id_reporte, respuesta))
-        cursor.execute("UPDATE Reportes SET estado = 'Resuelto' WHERE id_reporte = ?", (id_reporte,))
+            INSERT INTO Respuestas (id_reporte, id_docente, mensaje_respuesta)
+            VALUES (?, ?, ?)
+        """, (id_reporte, session['user_id'], respuesta.strip()))
+
+        cursor.execute("""
+            UPDATE Reportes 
+            SET estado = 'Resuelto' 
+            WHERE id_reporte = ?
+        """, (id_reporte,))
+
         conn.commit()
         conn.close()
-        flash('Respuesta enviada y reporte actualizado', 'success')
+
+        flash('Respuesta enviada y reporte actualizado.', 'success')
+
     except Exception as e:
         flash(f'Error al responder: {str(e)}', 'danger')
 
@@ -405,14 +418,38 @@ def bandeja_estudiante():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
-    respuestas_inventadas = [
-        {
-            'titulo_reporte': 'Pérdida de teléfono móvil',
-            'mensaje': 'Hola David, ya revisamos las cámaras de seguridad. El dispositivo fue encontrado en la dirección y puedes pasar por él a la oficina de coordinación.',
-            'fecha': '12/05/2026 - 10:30 AM'
-        }
-    ]
-    return render_template('bandeja.html', respuestas=respuestas_inventadas)
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT 
+                R.titulo,
+                Res.mensaje_respuesta,
+                R.fecha_creacion
+            FROM Respuestas Res
+            JOIN Reportes R ON Res.id_reporte = R.id_reporte
+            WHERE R.id_usuario = ?
+            ORDER BY R.fecha_creacion DESC
+        """, (session['user_id'],))
+
+        filas = cursor.fetchall()
+        conn.close()
+
+        respuestas = []
+
+        for f in filas:
+            respuestas.append({
+                'titulo_reporte': f[0],
+                'mensaje': f[1],
+                'fecha': f[2].strftime('%d/%m/%Y - %I:%M %p') if f[2] else ''
+            })
+
+    except Exception as e:
+        flash(f'Error al cargar bandeja: {str(e)}', 'danger')
+        respuestas = []
+
+    return render_template('bandeja.html', respuestas=respuestas)
 
 
 # ============================================================
